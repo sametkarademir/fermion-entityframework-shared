@@ -53,7 +53,7 @@ public class EfRepositoryBase<TEntity, TKey, TContext>(TContext context) :
         return entity;
     }
 
-    public async Task<PageableResourceDto<TEntity>> GetListAsync(
+    public async Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -72,7 +72,7 @@ public class EfRepositoryBase<TEntity, TKey, TContext>(TContext context) :
         return await queryable.ToPageableAsync(index, size, cancellationToken);
     }
 
-    public async Task<PageableResourceDto<TEntity>> GetListAsync(
+    public async Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         List<SortRequestDto>? sorts = null,
@@ -309,7 +309,7 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) :
         return entity;
     }
 
-    public async Task<PageableResourceDto<TEntity>> GetListAsync(
+    public async Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -328,7 +328,7 @@ public class EfRepositoryBase<TEntity, TContext>(TContext context) :
         return await queryable.ToPageableAsync(index, size, cancellationToken);
     }
 
-    public async Task<PageableResourceDto<TEntity>> GetListAsync(
+    public async Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         List<SortRequestDto>? sorts = null,
