@@ -24,7 +24,7 @@ public interface IReadRepository<TEntity, TKey> where TEntity : class, IEntity<T
         CancellationToken cancellationToken = default
     );
 
-    Task<PageableResourceDto<TEntity>> GetListAsync(
+    Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -35,7 +35,7 @@ public interface IReadRepository<TEntity, TKey> where TEntity : class, IEntity<T
         CancellationToken cancellationToken = default
     );
 
-    Task<PageableResourceDto<TEntity>> GetListAsync(
+    Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         List<SortRequestDto>? sorts = null,
@@ -71,7 +71,7 @@ public interface IReadRepository<TEntity> where TEntity : class, IEntity
         CancellationToken cancellationToken = default
     );
 
-    Task<PageableResourceDto<TEntity>> GetListAsync(
+    Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -82,7 +82,7 @@ public interface IReadRepository<TEntity> where TEntity : class, IEntity
         CancellationToken cancellationToken = default
     );
 
-    Task<PageableResourceDto<TEntity>> GetListAsync(
+    Task<PageableResponseDto<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         List<SortRequestDto>? sorts = null,

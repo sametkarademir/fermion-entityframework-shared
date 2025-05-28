@@ -32,8 +32,17 @@ public static class QueryableExtensions
         var sortString = string.Join(",", sortRequests.Select(x => $"{x.Field} {x.Order}"));
         return queryable.OrderBy(sortString, cancellationToken);
     }
+    
+    public static IQueryable<T> ApplySort<T>(
+        this IQueryable<T> queryable, 
+        string? field = null,
+        SortOrderTypes orderType = SortOrderTypes.Desc,
+        CancellationToken cancellationToken = default)
+    {
+        return string.IsNullOrWhiteSpace(field) ? queryable : queryable.OrderBy($"{field} {orderType.ToString()}", cancellationToken);
+    }
 
-    public static async Task<PageableResourceDto<T>> ToPageableAsync<T>(
+    public static async Task<PageableResponseDto<T>> ToPageableAsync<T>(
         this IQueryable<T> queryable,
         int page,
         int perPage,
@@ -44,7 +53,7 @@ public static class QueryableExtensions
 
         if (count == 0)
         {
-            return new PageableResourceDto<T>([], count, page, perPage);
+            return new PageableResponseDto<T>([], new PageableResponseMetaDto(count, page, perPage));
         }
 
         var items = await queryable
@@ -53,7 +62,7 @@ public static class QueryableExtensions
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        var list = new PageableResourceDto<T>(items, count, page, perPage);
+        var list = new PageableResponseDto<T>(items, new PageableResponseMetaDto(count, page, perPage));
 
         return list;
     }
