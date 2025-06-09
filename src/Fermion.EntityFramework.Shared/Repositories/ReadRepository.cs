@@ -15,9 +15,16 @@ public class ReadRepository<TEntity, TKey, TContext>(TContext context) :
     where TEntity : class, IEntity<TKey>
     where TContext : DbContext
 {
-    public IQueryable<TEntity> Query()
+    public IQueryable<TEntity> Query(bool ignoreFilters = false)
     {
-        return context.Set<TEntity>();
+        var queryable = context.Set<TEntity>();
+    
+        if (ignoreFilters)
+        {
+            return queryable.IgnoreQueryFilters();
+        }
+    
+        return queryable;
     }
 
     public async Task<TEntity> GetAsync(
@@ -120,9 +127,16 @@ public class ReadRepository<TEntity, TContext>(TContext context) :
     where TEntity : class, IEntity
     where TContext : DbContext
 {
-    public IQueryable<TEntity> Query()
+    public IQueryable<TEntity> Query(bool ignoreFilters = false)
     {
-        return context.Set<TEntity>();
+        var queryable = context.Set<TEntity>();
+    
+        if (ignoreFilters)
+        {
+            return queryable.IgnoreQueryFilters();
+        }
+    
+        return queryable;
     }
 
     public async Task<TEntity> GetAsync(

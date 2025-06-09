@@ -5,31 +5,36 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>Fermion.EntityFramework.Shared</PackageId>
-        <Version>0.0.2</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.1.0</Version>
         <Authors>Samet Karademir</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/sametkarademir/fermion-entityframework-shared</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/sametkarademir/fermion-entityframework-shared</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/sametkarademir/fermion-entityframework-shared.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Update="readme.md">
-            <Pack>true</Pack>
-            <PackagePath>/</PackagePath>
-        </None>
+        <None Include="readme.md" Pack="true" PackagePath="/" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fermion.Domain.Shared" Version="0.0.1" />
-        <PackageReference Include="Fermion.Exceptions" Version="0.0.1" />
-        <PackageReference Include="Fermion.Extensions" Version="0.0.1" />
-        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.2"/>
+        <PackageReference Include="Fermion.Domain.Shared" Version="0.1.0" />
+        <PackageReference Include="Fermion.Exceptions" Version="0.1.0" />
+        <PackageReference Include="Fermion.Extensions" Version="0.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.2"/>
     </ItemGroup>
 
 </Project>
