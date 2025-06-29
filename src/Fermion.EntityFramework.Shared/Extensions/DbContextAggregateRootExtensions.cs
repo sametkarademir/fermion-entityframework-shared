@@ -1,4 +1,4 @@
-using Fermion.Domain.Shared.Abstractions;
+using Fermion.Domain.Shared.Interfaces;
 using Fermion.Domain.Shared.Filters;
 using Fermion.Extensions.Claims;
 using Microsoft.AspNetCore.Http;

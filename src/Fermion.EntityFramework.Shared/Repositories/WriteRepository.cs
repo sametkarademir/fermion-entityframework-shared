@@ -1,6 +1,6 @@
 using System.Collections;
-using Fermion.Domain.Shared.Abstractions;
-using Fermion.EntityFramework.Shared.Repositories.Abstractions;
+using Fermion.Domain.Shared.Interfaces;
+using Fermion.EntityFramework.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -11,76 +11,71 @@ public class WriteRepository<TEntity, TKey, TContext>(TContext context) :
     where TEntity : class, IEntity<TKey>
     where TContext : DbContext
 {
+    public DbContext GetDbContext() => context;
+    public DbSet<TEntity> GetDbSet() => context.Set<TEntity>();
 
-    public async Task<TEntity> AddAsync(TEntity entity, bool saveImmediately = false)
+    public IDbContextTransaction BeginTransaction() { return context.Database.BeginTransaction(); }
+    public async Task<IDbContextTransaction> BeginTransactionAsync() { return await context.Database.BeginTransactionAsync(); }
+
+    public async Task<TEntity> AddAsync(
+        TEntity entity,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
-        await context.AddAsync(entity);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        await context.AddAsync(entity, cancellationToken);
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities, bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> AddRangeAsync(
+        ICollection<TEntity> entities,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
-        await context.AddRangeAsync(entities);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        await context.AddRangeAsync(entities, cancellationToken);
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entities;
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity, bool saveImmediately = false)
+    public async Task<TEntity> UpdateAsync(
+        TEntity entity,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
         context.Update(entity);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities, bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> UpdateRangeAsync(
+        ICollection<TEntity> entities,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
         context.UpdateRange(entities);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entities;
     }
 
-    public async Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false, bool saveImmediately = false)
+    public async Task<TEntity> DeleteAsync(
+        TEntity entity,
+        bool permanent = false,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
         await SetEntityAsDeletedAsync(entity, permanent);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> DeleteRangeAsync(ICollection<TEntity> entities, bool permanent = false, bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> DeleteRangeAsync(
+        ICollection<TEntity> entities,
+        bool permanent = false,
+        bool saveImmediately = false,
+        CancellationToken cancellationToken = default)
     {
         await SetEntityAsDeletedAsync(entities, permanent);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entities;
     }
 
@@ -88,9 +83,6 @@ public class WriteRepository<TEntity, TKey, TContext>(TContext context) :
     {
         await context.SaveChangesAsync(cancellationToken);
     }
-
-    public IDbContextTransaction BeginTransaction() { return context.Database.BeginTransaction(); }
-    public async Task<IDbContextTransaction> BeginTransactionAsync() { return await context.Database.BeginTransactionAsync(); }
 
     #region Delete Protected Method
 
@@ -212,87 +204,58 @@ public class WriteRepository<TEntity, TContext>(TContext context) :
     where TEntity : class, IEntity
     where TContext : DbContext
 {
-    public async Task<TEntity> AddAsync(TEntity entity, bool saveImmediately = false)
+    public DbContext GetDbContext() => context;
+    public DbSet<TEntity> GetDbSet() => context.Set<TEntity>();
+
+    public IDbContextTransaction BeginTransaction() => context.Database.BeginTransaction();
+    public async Task<IDbContextTransaction> BeginTransactionAsync() => await context.Database.BeginTransactionAsync();
+
+    public async Task<TEntity> AddAsync(TEntity entity, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
-        await context.AddAsync(entity);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        await context.AddAsync(entity, cancellationToken);
+        if (saveImmediately) await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities, bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
-        await context.AddRangeAsync(entities);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        await context.AddRangeAsync(entities, cancellationToken);
+        if (saveImmediately) await this.SaveChangesAsync(cancellationToken);
         return entities;
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity, bool saveImmediately = false)
+    public async Task<TEntity> UpdateAsync(TEntity entity, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
         context.Update(entity);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await this.SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities,
-        bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
         context.UpdateRange(entities);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await this.SaveChangesAsync(cancellationToken);
         return entities;
     }
 
-    public async Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false, bool saveImmediately = false)
+    public async Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
         await SetEntityAsDeletedAsync(entity, permanent);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await this.SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task<ICollection<TEntity>> DeleteRangeAsync(ICollection<TEntity> entities, bool permanent = false,
-        bool saveImmediately = false)
+    public async Task<ICollection<TEntity>> DeleteRangeAsync(ICollection<TEntity> entities, bool permanent = false, bool saveImmediately = false, CancellationToken cancellationToken = default)
     {
         await SetEntityAsDeletedAsync(entities, permanent);
-
-        if (saveImmediately)
-        {
-            await this.SaveChangesAsync();
-        }
-
+        if (saveImmediately) await this.SaveChangesAsync(cancellationToken);
         return entities;
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
-
-    public IDbContextTransaction BeginTransaction() { return context.Database.BeginTransaction(); }
-    public async Task<IDbContextTransaction> BeginTransactionAsync() { return await context.Database.BeginTransactionAsync(); }
 
     #region Delete Protected Method
 

@@ -32,9 +32,9 @@ public static class QueryableExtensions
         var sortString = string.Join(",", sortRequests.Select(x => $"{x.Field} {x.Order}"));
         return queryable.OrderBy(sortString, cancellationToken);
     }
-    
+
     public static IQueryable<T> ApplySort<T>(
-        this IQueryable<T> queryable, 
+        this IQueryable<T> queryable,
         string? field = null,
         SortOrderTypes orderType = SortOrderTypes.Desc,
         CancellationToken cancellationToken = default)
