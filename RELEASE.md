@@ -1,144 +1,146 @@
 # Release Process Guide
 
-Bu kılavuz, Fermion.EntityFramework.Shared paketinin release sürecini açıklar.
+This guide explains the release process for the Fermion.EntityFramework.Shared package.
 
-## 🚀 Hızlı Başlangıç
+## 🚀 Quick Start
 
-### 1. Manuel Release (Yerel)
+### 1. Manual Release (Local)
 
 ```bash
-# Patch release (örnek: 1.0.1 -> 1.0.2)
+# Patch release (e.g., 1.0.1 -> 1.0.2)
 make release
-# veya
+# or
 make release-patch
 
-# Minor release (örnek: 1.0.1 -> 1.1.0)
+# Minor release (e.g., 1.0.1 -> 1.1.0)
 make release-minor
 
-# Major release (örnek: 1.0.1 -> 2.0.0)
+# Major release (e.g., 1.0.1 -> 2.0.0)
 make release-major
 ```
 
-### 2. GitHub Actions ile Release
+### 2. Release via GitHub Actions
 
-1. **GitHub Repository'de Actions sekmesine gidin**
-2. **"Publish Package" workflow'unu seçin**
-3. **"Run workflow" butonuna tıklayın**
-4. **Version type'ı seçin (patch, minor, major)**
-5. **"Run workflow" ile başlatın**
+1. Go to the Actions tab in your GitHub repository
+2. Select the "Publish Package" workflow
+3. Click on the "Run workflow" button
+4. Choose the version type (patch, minor, major)
+5. Click "Run workflow" to start the process
 
-## 📋 Release Süreci
+## 📋 Release Steps
 
-### Otomatik Adımlar:
+### Automated Steps:
 
-1. **Version Belirleme**: En son git tag'ini alır ve belirtilen türde artırır
-2. **Proje Güncelleme**: `.csproj` dosyasındaki `<Version>` değerini günceller
-3. **Build & Pack**: Projeyi build eder ve NuGet paketi oluşturur
-4. **Git İşlemleri**: 
-   - Değişiklikleri commit eder
-   - Yeni version ile git tag oluşturur
-   - Changes'i GitHub'a push eder
-5. **GitHub Actions Tetikleme**: Tag push edildiğinde otomatik olarak publish işlemi başlar
-6. **NuGet Yayınlama**: Paketi NuGet.org'a yayınlar
-7. **GitHub Release**: GitHub'da release oluşturur
+- **Version Detection**: Detects the latest git tag and increments it based on the selected release type
+- **Project Update**: Updates the `<Version>` field in the .csproj file
+- **Build & Pack**: Builds the project and creates a NuGet package
+- **Git Operations**:
+  - Commits changes
+  - Creates a new git tag
+  - Pushes the changes to GitHub
+- **GitHub Actions Trigger**: Automatically starts the publish workflow when a new tag is pushed
+- **NuGet Publish**: Publishes the package to NuGet.org
+- **GitHub Release**: Creates a new GitHub release
 
-## 🔧 Kurulum
+## 🔧 Setup
 
-### Gereksinimler:
+### Requirements:
 
-1. **NuGet API Key**: `NUGET_API_KEY` secret'ını GitHub repository'nize ekleyin
-   - NuGet.org hesabınızdan API key oluşturun
-   - GitHub repo → Settings → Secrets and variables → Actions
-   - `NUGET_API_KEY` adında secret oluşturun
+**NuGet API Key**: Add a `NUGET_API_KEY` secret to your GitHub repository
 
-2. **Git Yapılandırması**: Yerel kullanım için git config'i kontrol edin
-   ```bash
-   git config --global user.name "Your Name"
-   git config --global user.email "your.email@example.com"
-   ```
+1. Create an API key from your NuGet.org account
+2. Go to your GitHub repo → Settings → Secrets and variables → Actions
+3. Add a new secret named `NUGET_API_KEY`
 
-### İlk Kurulum:
+**Git Configuration** (for local use):
 
 ```bash
-# Script'leri executable yapın
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+### Initial Setup
+
+```bash
+# Make the script executable
 chmod +x scripts/release.sh
 
-# İlk tag'i oluşturun (eğer yoksa)
+# Create the first tag (if it doesn't exist)
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-## 📝 Version Türleri
+## 📝 Version Types
 
-- **Patch** (1.0.1 → 1.0.2): Bug fixes, küçük değişiklikler
-- **Minor** (1.0.1 → 1.1.0): Yeni özellikler, backward compatible
-- **Major** (1.0.1 → 2.0.0): Breaking changes, major değişiklikler
+- **Patch** (1.0.1 → 1.0.2): Bug fixes, minor improvements
+- **Minor** (1.0.1 → 1.1.0): New features, backward-compatible changes
+- **Major** (1.0.1 → 2.0.0): Breaking changes, major updates
 
-## 🔄 Workflow Detayları
+## 🔄 Workflow Details
 
-### Manuel Tetikleme:
+### Manual Trigger:
 ```
 GitHub Actions → Publish Package → Run workflow
 ```
 
-### Otomatik Tetikleme:
+### Automatic Trigger:
 ```
 git tag v1.0.2 → GitHub Actions → NuGet Publish
 ```
 
-## 📊 Makefile Komutları
+## 📊 Makefile Commands
 
 ```bash
-make help           # Kullanılabilir komutları göster
-make release        # Patch release oluştur
-make release-patch  # Patch release oluştur
-make release-minor  # Minor release oluştur
-make release-major  # Major release oluştur
-make build          # Projeyi build et
-make test           # Testleri çalıştır
-make clean          # Build artifacts'ları temizle
+make help           # Show available commands
+make release        # Create a patch release
+make release-patch  # Create a patch release
+make release-minor  # Create a minor release
+make release-major  # Create a major release
+make build          # Build the project
+make test           # Run tests
+make clean          # Clean build artifacts
 ```
 
-## 🐛 Sorun Giderme
+## 🐛 Troubleshooting
 
-### Script çalışmıyor:
+**Script not running:**
 ```bash
 chmod +x scripts/release.sh
 ```
 
-### Git tag problemi:
+**Git tag issues:**
 ```bash
-# Mevcut tag'leri listele
+# List existing tags
 git tag -l
 
-# Tag sil (yanlış tag oluşturduysanız)
+# Delete a tag (if created incorrectly)
 git tag -d v1.0.1
 git push origin :refs/tags/v1.0.1
 ```
 
-### NuGet publish hatası:
-- `NUGET_API_KEY` secret'ının doğru olduğundan emin olun
-- NuGet.org'da aynı version'ın zaten var olup olmadığını kontrol edin
+**NuGet publish error:**
+- Ensure the `NUGET_API_KEY` secret is correctly configured
+- Check if the same version already exists on NuGet.org
 
-## 📈 Örnek Kullanım
+## 📈 Example Usage
 
 ```bash
-# Şu anki version: v1.0.1
-# Patch release yapmak istiyorsanız:
+# Current version: v1.0.1
+# To create a patch release:
 make release
 
-# Bu işlem:
-# 1. v1.0.2 olarak version'ı artırır
-# 2. .csproj dosyasını günceller
-# 3. Paketi oluşturur
-# 4. Git'e commit/tag/push eder
-# 5. GitHub Actions tetiklenir
-# 6. NuGet'e yayınlanır
+# This will:
+# 1. Increment the version to v1.0.2
+# 2. Update the .csproj file
+# 3. Generate the NuGet package
+# 4. Commit, tag, and push to GitHub
+# 5. Trigger GitHub Actions
+# 6. Publish to NuGet
 ```
 
-## 🚨 Dikkat Edilmesi Gerekenler
+## 🚨 Important Notes
 
-1. **Main branch'te çalışın**: Release işlemi main branch'te yapılmalı
-2. **Temiz working directory**: Commit edilmemiş değişiklikler olmamalı
-3. **Test edilmiş kod**: Release öncesi testlerin geçtiğinden emin olun
-4. **Anlamlı commit messages**: Semantic versioning'e uygun commit mesajları kullanın 
+- **Use the main branch**: Releases should be made from the main branch
+- **Clean working directory**: Make sure there are no uncommitted changes
+- **Tested code**: Ensure all tests pass before releasing
+- **Meaningful commits**: Follow semantic versioning and commit message best practices

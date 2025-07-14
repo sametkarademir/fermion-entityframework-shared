@@ -2,20 +2,24 @@
 
 set -e
 
+# Project file path
 PROJECT_FILE="src/Fermion.EntityFramework.Shared/Fermion.EntityFramework.Shared.csproj"
 
+# Version type parameter (patch, minor, major)
 VERSION_TYPE=${1:-patch}
 
 echo "🚀 Starting release process..."
 
+# Get the latest tag from Git
 LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v1.0.0")
 echo "📍 Latest tag: $LATEST_TAG"
 
+# If no tags exist, use initial version
 if [ "$LATEST_TAG" == "v1.0.0" ] && [ -z "$(git tag -l)" ]; then
     echo "⚠️  No tags found. Starting with v1.0.1"
     NEW_VERSION="v1.0.1"
 else
-    # Versiyonu arttır
+    # Increment version
     IFS='.' read -r major minor patch <<< "${LATEST_TAG#v}"
     
     case $VERSION_TYPE in
@@ -37,19 +41,31 @@ fi
 
 echo "🆕 New version: $NEW_VERSION"
 
+# Update <Version> field in .csproj file
 echo "📝 Updating version in $PROJECT_FILE"
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    # For macOS
     sed -i '' -E "s|<Version>.*</Version>|<Version>${NEW_VERSION#v}</Version>|" "$PROJECT_FILE"
 else
+    # For Linux
     sed -i -E "s|<Version>.*</Version>|<Version>${NEW_VERSION#v}</Version>|" "$PROJECT_FILE"
 fi
 
+# Verify the change
 echo "✅ Version updated in project file:"
 grep -n "<Version>" "$PROJECT_FILE"
 
-echo "📦 Building and packing..."
-dotnet pack "$PROJECT_FILE" -c Release /p:PackageVersion="${NEW_VERSION#v}" -o
+# Build and package .NET
+echo "🔨 Building project..."
+dotnet build "$PROJECT_FILE" -c Release
 
+echo "📦 Packing..."
+dotnet pack "$PROJECT_FILE" -c Release -o nupkg --no-build /p:PackageVersion="${NEW_VERSION#v}"
+
+echo "📋 Generated packages:"
+ls -la nupkg/
+
+# Check Git status
 if [ -n "$(git status --porcelain)" ]; then
     echo "📤 Committing changes..."
     git add "$PROJECT_FILE"
