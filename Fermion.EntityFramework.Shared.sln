@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3B7F21AF-EF3B-489B-8829-CAFD79BD44F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fermion.EntityFramework.Shared", "src\Fermion.EntityFramework.Shared\Fermion.EntityFramework.Shared.csproj", "{CE92D657-0B12-4EEA-A9B6-395A6D3DC723}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE92D657-0B12-4EEA-A9B6-395A6D3DC723} = {3B7F21AF-EF3B-489B-8829-CAFD79BD44F0}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE92D657-0B12-4EEA-A9B6-395A6D3DC723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE92D657-0B12-4EEA-A9B6-395A6D3DC723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE92D657-0B12-4EEA-A9B6-395A6D3DC723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE92D657-0B12-4EEA-A9B6-395A6D3DC723}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

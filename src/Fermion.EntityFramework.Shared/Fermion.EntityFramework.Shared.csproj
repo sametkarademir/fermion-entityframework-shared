@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>Fermion.EntityFramework.Shared</PackageId>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>1.0.1</Version>
+        <Authors>Samet Karademir</Authors>
+        <Description>A set of shared extensions for Fermion Entity Framework projects.</Description>
+        <PackageTags>extensions;dotnet;fermion;entityframework;shared;repository;unitofwork</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/sametkarademir/fermion-entityframework-shared</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/sametkarademir/fermion-entityframework-shared.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="/" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fermion.Domain.Exceptions" Version="1.0.0"/>
+        <PackageReference Include="Fermion.Domain.Extensions" Version="1.0.0"/>
+        <PackageReference Include="Fermion.Domain.Shared" Version="1.0.1"/>
+    </ItemGroup>
+
+</Project>
