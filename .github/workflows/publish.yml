@@ -17,35 +17,8 @@ on:
           - major
 
 jobs:
-  create-release:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Make release script executable
-        run: chmod +x scripts/release.sh
-
-      - name: Create Release
-        run: ./scripts/release.sh ${{ github.event.inputs.version_type }}
-
   publish:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && needs.create-release.result == 'success')
-    needs: [create-release]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
