@@ -11,13 +11,13 @@ VERSION_TYPE=${1:-patch}
 echo "🚀 Starting release process..."
 
 # Get the latest tag from Git
-LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v1.0.0")
+LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "")
 echo "📍 Latest tag: $LATEST_TAG"
 
-# If no tags exist, use initial version
-if [ "$LATEST_TAG" == "v1.0.0" ] && [ -z "$(git tag -l)" ]; then
-    echo "⚠️  No tags found. Starting with v1.0.1"
-    NEW_VERSION="v1.0.1"
+# If no tags exist, start with v1.0.0
+if [ -z "$LATEST_TAG" ] || [ -z "$(git tag -l)" ]; then
+    echo "⚠️  No tags found. Starting with v1.0.0"
+    NEW_VERSION="v1.0.0"
 else
     # Increment version
     IFS='.' read -r major minor patch <<< "${LATEST_TAG#v}"
